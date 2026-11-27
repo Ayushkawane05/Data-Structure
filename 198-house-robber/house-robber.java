@@ -1,24 +1,30 @@
 class Solution {
     public int rob(int[] nums) {
-        int[] dp = new int[nums.length+1];
-        Arrays.fill(dp,-1);
-        return check(nums, 0,dp);
+
+        int[] dp = new int[nums.length + 1];
+
+        dp[0] = nums[0];
+
+        if (nums.length == 1)
+            return nums[0];
+
+        if (nums.length == 2)
+            return Math.max(nums[1], nums[0]);
+
+        dp[1] = Math.max(nums[1], nums[0]);
+
+        for (int i = 2; i < nums.length; i++) {
+            int take = 0;
+
+            take = dp[i - 2] + nums[i];
+
+            int notTake = dp[i-1];
+
+            dp[i] = Math.max(take, notTake);
+        }
+
+        return dp[nums.length - 1];
+
     }
 
-    public int check(int[] nums, int i,int[] dp) {
-        if (i == nums.length - 1)
-            return nums[i];
-        if (i >= nums.length)
-            return 0;
-
-        if(dp[i]!=-1) return dp[i];
-
-        int take = 0;
-        if (i + 1 < nums.length)
-            take = nums[i] + check(nums, i + 2,dp);
-
-        int not = check(nums, i + 1,dp);
-
-        return dp[i] = Math.max(take, not);
-    }
 }
